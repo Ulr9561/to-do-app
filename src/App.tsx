@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectIsLoading, setIsLoading } from "./app/slices/turboLoaderslice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IUser } from "./types";
-import { selectUser, setUser } from "./app/slices/userSlice";
+import { setUser } from "./app/slices/userSlice";
 import React from "react";
 
 function App() {
@@ -14,7 +14,6 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isLoading = useAppSelector(selectIsLoading);
-    const user = useAppSelector(selectUser);
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,7 +33,6 @@ function App() {
             navigate("/home");
         }, 3000);
     };
-
 
     return (
         <>

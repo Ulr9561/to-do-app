@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectTasks } from "../app/slices/taskSlice";
-import { selectUser } from "../app/slices/userSlice";
+import { clearUser, selectUser } from "../app/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { selectOpen, selectType } from "../app/slices/dialogSlice";
 import Dialog from "../components/Dialog";
@@ -17,6 +17,7 @@ const Home: React.FC = () => {
     const type = useAppSelector(selectType);
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const [selectedFilter, setSelectedFilter] = useState<string>("all");
     const [filteredTasks, setFilteredTasks] = useState<ITask[]>(tasks);
 
@@ -45,6 +46,7 @@ const Home: React.FC = () => {
                 <Button
                     className="text-white bg-accent-secondary rounded p-2 hover:bg-accent-secondary/80"
                     type="logout"
+                    onClick={() => dispatch(clearUser())}
                     text="Deconnexion"
                 />
             </header>

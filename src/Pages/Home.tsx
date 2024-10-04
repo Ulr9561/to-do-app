@@ -21,10 +21,6 @@ const Home: React.FC = () => {
     const [filteredTasks, setFilteredTasks] = useState<ITask[]>(tasks);
 
     useEffect(() => {
-        if (!user || !user.name) {
-            navigate("/login");
-            return;
-        }
         setFilteredTasks(
             tasks.filter((task) => {
                 return selectedFilter === "completed"
@@ -35,7 +31,13 @@ const Home: React.FC = () => {
             }),
         );
         console.log(selectedFilter);
-    }, [navigate, selectedFilter, tasks, user]);
+    }, [navigate, selectedFilter, tasks]);
+    useEffect(() => {
+        if (!user || !user.name) {
+            navigate("/login");
+            return;
+        }
+    });
 
     return (
         <div className="flex flex-col min-h-screen bg-bg-primary text-text-primary ">

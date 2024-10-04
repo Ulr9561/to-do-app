@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
@@ -7,7 +8,6 @@ import { selectUser } from "../app/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { selectOpen, selectType } from "../app/slices/dialogSlice";
 import Dialog from "../components/Dialog";
-import { useEffect, useState } from "react";
 import { ITask } from "../types";
 
 const Home: React.FC = () => {
@@ -15,29 +15,28 @@ const Home: React.FC = () => {
     const user = useAppSelector(selectUser);
     const isOpen = useAppSelector(selectOpen);
     const type = useAppSelector(selectType);
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const [selectedFilter, setSelectedFilter] = useState<string>("all");
     const [filteredTasks, setFilteredTasks] = useState<ITask[]>(tasks);
 
     useEffect(() => {
+        if (!user.email) {
+            return navigate("/");
+        }
+    }, [navigate, user]);
+
+    useEffect(() => {
         setFilteredTasks(
             tasks.filter((task) => {
-                return selectedFilter === "completed"
-                    ? task.completed === true
-                    : selectedFilter === "incomplete"
-                      ? task.completed === false
-                      : true;
+                if (selectedFilter === "completed")
+                    return task.completed === true;
+                if (selectedFilter === "incomplete")
+                    return task.completed === false;
+                return true;
             }),
         );
-        console.log(selectedFilter);
-    }, [navigate, selectedFilter, tasks]);
-    useEffect(() => {
-        if (!user || !user.name) {
-            navigate("/login");
-            return;
-        }
-    });
+    }, [selectedFilter, tasks]);
 
     return (
         <div className="flex flex-col min-h-screen bg-bg-primary text-text-primary ">
@@ -50,7 +49,7 @@ const Home: React.FC = () => {
                 />
             </header>
             <main className="flex-grow p-4">
-                <h2 className="text-3xl mb-4">Bienvenue, {user?.name}</h2>
+                <h2 className="text-3xl mb-4">Bienvenue, {user.name}</h2>
                 <div className="bg-bg-secondary p-4 rounded-lg shadow-lg">
                     <h3 className="my-3 text-2xl">Liste des taches</h3>
 

@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
     user: userSliceReducer,
     dialog: dialogSliceReducer,
 });
+
 export const store = (preloadedState?: Partial<RootState>) => {
     return configureStore({
         reducer: rootReducer,

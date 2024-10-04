@@ -4,11 +4,11 @@ import Home from "./Pages/Home";
 
 const router = createBrowserRouter([
     {
-        path: "/login",
+        path: "/",
         element: <App />
     },
     {
-        path: "/",
+        path: "/home",
         element: <Home />,
     }
 ]);

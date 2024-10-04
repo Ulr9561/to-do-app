@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectIsLoading, setIsLoading } from "./app/slices/turboLoaderslice";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IUser } from "./types";
-import { setUser } from "./app/slices/userSlice";
+import { selectUser, setUser } from "./app/slices/userSlice";
 import React from "react";
 
 function App() {
@@ -12,18 +12,9 @@ function App() {
     const [email, setEmail] = useState<string>("");
 
     const navigate = useNavigate();
-
-    const isLoading = useAppSelector(selectIsLoading);
-
-    useEffect(() => {
-        const user = localStorage.getItem("user");
-        if (user) {
-            navigate("/");
-        }
-        console.log(user);
-    });
-
     const dispatch = useAppDispatch();
+    const isLoading = useAppSelector(selectIsLoading);
+    const user = useAppSelector(selectUser);
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,19 +22,20 @@ function App() {
             console.log("Please provide all required fields");
             return;
         }
-        const user: IUser = {
+        const newUser: IUser = {
             name,
             username,
             email,
         };
         dispatch(setIsLoading(true));
         setTimeout(() => {
-            dispatch(setUser(user));
-            navigate("/home");
+            dispatch(setUser(newUser));
             dispatch(setIsLoading(false));
+            navigate("/home");
         }, 3000);
     };
-    console.log(isLoading);
+
+
     return (
         <>
             <div

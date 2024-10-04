@@ -11,6 +11,7 @@ const userSlice = createSlice({
         setUser(state, action: PayloadAction<IUser>) {
             state = action.payload;
             localStorage.setItem("user", JSON.stringify(state));
+            return state;
         },
         clearUser() {
             localStorage.removeItem("user");
